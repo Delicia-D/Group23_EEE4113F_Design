@@ -1,0 +1,146 @@
+/* Dark theme layout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.upload-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.upload-card {
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.status.success {
+  color: #57d18e;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="datetime-local"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #f1f1f1;
+}
+
+button[type="submit"] {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background-color: #0066ff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}.penguin-info-combined-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e2f;
+  border-radius: 12px;
+  padding: 15px 20px;
+  gap: 20px;
+  color: #ffffff;
+  width: 100%;
+  max-width: 500px;
+}
+
+.penguin-text-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  flex: 1;
+}
+
+.penguin-image-box img {
+  width: 130px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+
+button[type="submit"]:hover {
+  background-color: #004ec2;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #9ecaff;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #1a73e8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+#uploadMessage.success {
+    color: #564caf;
+}
+
+#uploadMessage.error {
+    color: #F44336;
+}
+
+button[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+}

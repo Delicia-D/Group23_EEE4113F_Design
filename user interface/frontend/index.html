@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Penguin Monitor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style1.css">
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+<meta name="apple-mobile-web-app-status-bar" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PenguinMonitor">
+
+</head>
+<button class="dark-mode-toggle" onclick="toggleDarkMode()">
+  <i id="darkModeIcon" class="fas fa-moon"></i>
+</button>
+<body class="bg-cover bg-center min-h-screen flex items-center justify-center" style="background-image: url('penguin-bg.jpeg')">
+  <div class="bg-white/90 rounded-xl shadow-lg p-8 w-full max-w-md">
+    <div class="flex justify-center mb-6">
+      <img src="test.jpeg" alt="Penguin Logo" class="h-12 w-12" />
+    </div>
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Sign in to your account</h2>
+
+    <div id="feedback" class="text-sm text-center py-2 px-4 rounded mb-4 hidden"></div>
+
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label for="email" class="block text-gray-700 text-sm font-medium mb-1">Email address</label>
+        <div class="relative">
+          <input id="email" name="email" type="email" autocomplete="email" required 
+                 class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                 placeholder="name@example.com" />
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="fas fa-envelope text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+        <div class="relative">
+          <input id="password" name="password" type="password" autocomplete="current-password" required 
+                 class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" 
+                 placeholder="••••••••" />
+          <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <i id="eyeIcon" class="fas fa-eye-slash text-gray-400 hover:text-gray-600"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox" 
+                 class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+          <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+        </div>
+        <button type="button" onclick="showForgotPasswordModal()" class="text-sm text-blue-600 hover:underline focus:outline-none">Forgot password?</button>
+      </div>
+
+      <button type="submit" id="loginButton" class="w-full flex justify-center items-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <span id="loginText">Sign in</span>
+        <span id="loginSpinner" class="hidden ml-2">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+      </button>
+    </form>
+
+    <p class="mt-4 text-sm text-center text-gray-600">
+      Don't have an account? <a href="signup.html" class="text-blue-600 hover:underline font-medium">Sign up</a>
+    </p>
+  </div>
+
+  <div id="forgotPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold text-gray-800">Reset Password</h3>
+        <button onclick="closeForgotPasswordModal()" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <p class="text-gray-600 mb-4">Enter your email address and we'll send you a link to reset your password.</p>
+      <input id="resetEmail" type="email" placeholder="your@email.com" 
+             class="w-full px-4 py-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <div id="resetFeedback" class="text-sm py-2 px-4 rounded mb-4 hidden"></div>
+      <div class="flex justify-end space-x-3">
+        <button onclick="closeForgotPasswordModal()" class="px-4 py-2 text-gray-700 rounded-md hover:bg-gray-100">Cancel</button>
+        <button onclick="sendPasswordReset()" id="resetButton" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center">
+          <span id="resetText">Send Reset Link</span>
+          <span id="resetSpinner" class="hidden ml-2">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSragj8lBTE-GSdm84gssfIfdjH2Ireic",
+      authDomain: "monitoring-system-dfb8a.firebaseapp.com",
+      projectId: "monitoring-system-dfb8a",
+      storageBucket: "monitoring-system-dfb8a.appspot.com",
+      messagingSenderId: "215711914708",
+      appId: "1:215711914708:web:5996b461f599fb6a7df941",
+      measurementId: "G-QNTH842YXF"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+
+    const loginForm = document.getElementById('loginForm');
+    const loginButton = document.getElementById('loginButton');
+    const loginText = document.getElementById('loginText');
+    const loginSpinner = document.getElementById('loginSpinner');
+    const feedback = document.getElementById('feedback');
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      login();
+    });
+
+    function togglePasswordVisibility() {
+      const password = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+      if (password.type === 'password') {
+        password.type = 'text';
+        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+      } else {
+        password.type = 'password';
+        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+      }
+    }
+
+    function showFeedback(message, type = 'error') {
+      feedback.textContent = message;
+      feedback.className = `text-sm text-center py-2 px-4 rounded mb-4`;
+      if (type === 'error') {
+        feedback.classList.add('bg-red-100', 'text-red-700');
+      } else if (type === 'success') {
+        feedback.classList.add('bg-green-100', 'text-green-700');
+      }
+      feedback.classList.remove('hidden');
+    }
+
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const rememberMe = document.getElementById("remember-me").checked;
+
+      if (!email || !password) {
+        showFeedback("Please enter both email and password.");
+        return;
+      }
+
+      loginText.classList.add('hidden');
+      loginSpinner.classList.remove('hidden');
+      loginButton.disabled = true;
+
+      const persistence = rememberMe ?
+        firebase.auth.Auth.Persistence.LOCAL :
+        firebase.auth.Auth.Persistence.SESSION;
+
+      auth.setPersistence(persistence)
+        .then(() => auth.signInWithEmailAndPassword(email, password))
+        .then(userCredential => {
+          const user = userCredential.user;
+          return firebase.database().ref("users/" + user.uid).once("value").then(snapshot => {
+            const userData = snapshot.val();
+            
+
+            if (!userData) {
+              showFeedback("User record not found.");
+              return auth.signOut();
+            }
+
+            const isAdmin = userData.isAdmin === true;
+            const isApproved = userData.approved === true;
+            const isVerified = user.emailVerified === true;
+
+            if (isVerified) {
+              firebase.database().ref("users/" + user.uid).update({
+                emailVerified: true
+              });
+            }
+
+            if (isAdmin) {
+              showFeedback("Welcome admin. Redirecting...", "success");
+              setTimeout(() => window.location.href = "admin-approval.html", 1000);
+              return;
+            }
+
+              if (!isApproved) {
+    showFeedback("Your account is not approved yet.");
+    return auth.signOut();
+  }
+
+
+            showFeedback("Login successful! Redirecting...", "success");
+            setTimeout(() => window.location.href = "dashboard.html", 1000);
+          });
+        })
+        .catch(error => {
+          let message = "Login failed. Please try again.";
+          switch (error.code) {
+            case 'auth/user-not-found':
+              message = "No account found with that email.";
+              break;
+            case 'auth/wrong-password':
+              message = "Incorrect password.";
+              break;
+            case 'auth/invalid-email':
+              message = "Invalid email address.";
+              break;
+            case 'auth/user-disabled':
+              message = "This account has been disabled.";
+              break;
+            case 'auth/too-many-requests':
+              message = "Too many login attempts. Please try again later.";
+              break;
+          }
+          showFeedback(message);
+        })
+        .finally(() => {
+          loginText.classList.remove('hidden');
+          loginSpinner.classList.add('hidden');
+          loginButton.disabled = false;
+        });
+    }
+
+    function showForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.remove('hidden');
+      document.getElementById('resetEmail').value = document.getElementById('email').value;
+    }
+
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.add('hidden');
+      document.getElementById('resetFeedback').classList.add('hidden');
+    }
+
+    function sendPasswordReset() {
+      const email = document.getElementById('resetEmail').value.trim();
+      const resetFeedback = document.getElementById('resetFeedback');
+      const resetText = document.getElementById('resetText');
+      const resetSpinner = document.getElementById('resetSpinner');
+      const resetButton = document.getElementById('resetButton');
+
+      if (!email) {
+        resetFeedback.textContent = "Please enter your email address";
+        resetFeedback.className = "text-sm py-2 px-4 rounded mb-4 bg-red-100 text-red-700";
+        resetFeedback.classList.remove('hidden');
+        return;
+      }
+
+      resetText.classList.add('hidden');
+      resetSpinner.classList.remove('hidden');
+      resetButton.disabled = true;
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          resetFeedback.textContent = `Password reset email sent to ${email}. Please check your inbox.`;
+          resetFeedback.className = "text-sm py-2 px-4 rounded mb-4 bg-green-100 text-green-700";
+          resetFeedback.classList.remove('hidden');
+        })
+        .catch(error => {
+          let message = "Error sending password reset email. Please try again.";
+          if (error.code === 'auth/user-not-found') {
+            message = "No account found with that email address.";
+          } else if (error.code === 'auth/invalid-email') {
+            message = "Please enter a valid email address.";
+          }
+          resetFeedback.textContent = message;
+          resetFeedback.className = "text-sm py-2 px-4 rounded mb-4 bg-red-100 text-red-700";
+          resetFeedback.classList.remove('hidden');
+        })
+        .finally(() => {
+          resetText.classList.remove('hidden');
+          resetSpinner.classList.add('hidden');
+          resetButton.disabled = false;
+        });
+    }
+    // Dark mode functionality
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  const isDarkMode = document.body.classList.contains('dark-mode');
+  localStorage.setItem('darkMode', isDarkMode);
+  
+  const icon = document.getElementById('darkModeIcon');
+  icon.classList.toggle('fa-moon', !isDarkMode);
+  icon.classList.toggle('fa-sun', isDarkMode);
+}
+
+// Check for saved dark mode preference
+if (localStorage.getItem('darkMode') === 'true') {
+  document.body.classList.add('dark-mode');
+  document.getElementById('darkModeIcon').classList.replace('fa-moon', 'fa-sun');
+}
+  </script>
+  
+</body>
+</html>

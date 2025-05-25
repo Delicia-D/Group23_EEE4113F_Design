@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Approve Users</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+<meta name="apple-mobile-web-app-status-bar" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PenguinMonitor">
+
+  <!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  emailjs.init("ywbhlRc7JDu6PMPiX"); //  public key
+</script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold">Pending User Approvals</h2>
+      <button onclick="logoutAdmin()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        Log Out
+      </button>
+    </div>
+    <div id="userList" class="space-y-4"></div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSragj8lBTE-GSdm84gssfIfdjH2Ireic",
+      authDomain: "monitoring-system-dfb8a.firebaseapp.com",
+      projectId: "monitoring-system-dfb8a",
+      storageBucket: "monitoring-system-dfb8a.appspot.com",
+      messagingSenderId: "215711914708",
+      appId: "1:215711914708:web:5996b461f599fb6a7df941"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    if (sessionStorage.getItem("isAdmin") !== "true") {
+      alert("Access denied. Please log in as admin.");
+      window.location.href = "admin-login.html";
+    } else {
+      loadPendingUsers();
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem("isAdmin");
+      window.location.href = "admin-login.html";
+    }
+
+    function loadPendingUsers() {
+      const userList = document.getElementById("userList");
+      db.ref("users").once("value").then(snapshot => {
+        userList.innerHTML = "";
+        const users = snapshot.val();
+        if (!users) {
+          userList.innerHTML = "<p>No users found.</p>";
+          return;
+        }
+
+        let hasPending = false;
+        for (const uid in users) {
+          const user = users[uid];
+          if (user.approved !== true) {
+            hasPending = true;
+            const div = document.createElement("div");
+            div.className = "flex justify-between items-center bg-gray-50 p-4 rounded border";
+            div.innerHTML = `
+              <div>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Work ID:</strong> ${user.workId || "—"}</p>
+              </div>
+              <button onclick="approveUser('${uid}')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Approve
+              </button>
+            `;
+            userList.appendChild(div);
+          }
+        }
+
+        if (!hasPending) {
+          userList.innerHTML = "<p>No pending users to approve.</p>";
+        }
+      });
+    }
+
+    function approveUser(uid) {
+      const userRef = db.ref("users/" + uid);
+      userRef.once("value").then(snapshot => {
+        const user = snapshot.val();
+        if (!user || !user.email) {
+          alert("User data incomplete.");
+          return;
+        }
+
+        return userRef.update({ approved: true }).then(() => {
+          alert("User approved.");
+          return window.emailjs.send("service_yqlic0i", "template_c2ahlkn", {
+            email: user.email
+          });
+        });
+      })
+      .then(() => {
+        console.log("Email sent successfully.");
+        loadPendingUsers();
+      })
+      .catch(err => {
+        console.error("Approval or email error:", err);
+        alert("An error occurred. See console for details.");
+      });
+    }
+  </script>
+</body>
+</html>

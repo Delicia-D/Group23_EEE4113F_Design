@@ -1,0 +1,202 @@
+/* Light Mode Styles - Save as light-mode.css */
+
+/* Base Styles */
+body.light-mode {
+  background-color: #f5f5f5;
+  color: #333333;
+}
+
+/* Sidebar */
+body.light-mode .sidebar {
+  background-color: #ffffff;
+  color: #333333;
+  border-right: 1px solid #e0e0e0;
+}
+
+body.light-mode .sidebar h2 {
+  color: #333333;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body.light-mode .sidebar button {
+  color: #333333;
+}
+
+body.light-mode .sidebar button:hover {
+  background-color: #f0f0f0;
+  color: #1a73e8;
+}
+
+body.light-mode .sidebar button i {
+  color: #1a73e8;
+}
+
+/* Main Content */
+body.light-mode .main-content {
+  background-color: #f5f5f5;
+}
+
+/* Tables */
+body.light-mode table {
+  background-color: #ffffff;
+}
+
+body.light-mode th, 
+body.light-mode td {
+  color: #333333;
+  border: 1px solid #e0e0e0;
+}
+
+body.light-mode th {
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #cccccc;
+}
+
+body.light-mode tr:hover td {
+  background-color: #f5f5f5;
+}
+
+body.light-mode thead {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Modal */
+body.light-mode .modal-content {
+  background: #ffffff;
+  color: #333333;
+}
+
+body.light-mode .close-btn {
+  color: #333333;
+}
+
+/* Buttons */
+body.light-mode .blue-btn {
+  background: linear-gradient(to right, #1a73e8, #0d47a1);
+  color: white;
+}
+
+body.light-mode .blue-btn:hover {
+  background: linear-gradient(to right, #1565c0, #0a2d5a);
+}
+
+/* Inputs */
+body.light-mode input[type="text"] {
+  border: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* Headers */
+body.light-mode h1, 
+body.light-mode h3 {
+  color: #333333;
+}
+
+/* Filter Panel */
+body.light-mode .filter-panel {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+body.light-mode .filter-panel input,
+body.light-mode .filter-panel select {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #e0e0e0;
+}
+
+body.light-mode select.statusDropdown {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #e0e0e0;
+}
+
+/* Summary Section */
+body.light-mode .summary-section {
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* White Box */
+body.light-mode .white-box {
+  background-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* Text Elements */
+body.light-mode #latestPenguinInfo {
+  color: #333333;
+}
+
+body.light-mode .img-label {
+  color: #666666;
+}
+
+/* Cards */
+body.light-mode .weight-chart-card {
+  background: #ffffff;
+}
+
+/* Sidebar Items */
+body.light-mode .sidebar-item {
+  color: #333333;
+}
+
+body.light-mode .sidebar-item:hover {
+  background-color: #f0f0f0;
+}
+
+body.light-mode .sidebar-item i {
+  color: #1a73e8;
+}
+
+/* Search Input */
+body.light-mode #searchInput {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #e0e0e0;
+}
+
+/* Penguin Banner */
+body.light-mode .penguin-banner {
+  background-color: #ffffff;
+}
+
+/* Pagination */
+body.light-mode .pagination-icon {
+  color: #333333;
+  background-color: #e0e0e0;
+}
+
+body.light-mode .pagination-icon:hover {
+  background-color: #1a73e8;
+  color: white;
+}
+
+body.light-mode .pagination-icon.disabled {
+  background-color: #cccccc;
+}
+
+body.light-mode .page-indicator {
+  color: #333333;
+}
+
+/* Badges */
+body.light-mode .badge {
+  background-color: #ff3d00;
+  color: white;
+}
+
+/* Special Buttons */
+body.light-mode .download-btn {
+  background: linear-gradient(to right, #1a73e8, #00b0ff);
+}
+
+body.light-mode .refresh-btn {
+  background: linear-gradient(to right, #1a73e8, #ff6d00);
+}
+
+body.light-mode .email-btn {
+  background: linear-gradient(to right, #1a73e8, #00c853);
+}

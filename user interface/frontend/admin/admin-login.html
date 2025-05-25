@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+<meta name="apple-mobile-web-app-status-bar" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PenguinMonitor">
+
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
+    <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Admin Login</h2>
+    <div id="feedback" class="text-sm text-center text-red-600 mb-4 hidden"></div>
+    <div class="mb-4">
+      <label for="adminId" class="block text-sm font-medium text-gray-700">Work ID</label>
+      <input id="adminId" type="text" required
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+    </div>
+    <div class="mb-6">
+      <label for="adminPass" class="block text-sm font-medium text-gray-700">Password</label>
+      <input id="adminPass" type="password" required
+             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+    </div>
+    <button onclick="loginAdmin()"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+      Log In
+    </button>
+  </div>
+
+  <script>
+    // Hardcoded credentials for testing
+    const adminAccounts = {
+      "DVHDEL001": "penguins@2025",
+      
+    };
+
+    function loginAdmin() {
+      const id = document.getElementById("adminId").value.trim();
+      const pass = document.getElementById("adminPass").value.trim();
+      const feedback = document.getElementById("feedback");
+
+      if (!adminAccounts[id] || adminAccounts[id] !== pass) {
+        feedback.textContent = "Invalid Work ID or password.";
+        feedback.classList.remove("hidden");
+        return;
+      }
+
+      // Save login flag for the session
+      sessionStorage.setItem("isAdmin", "true");
+      window.location.href = "admin-approval.html";
+    }
+  </script>
+</body>
+</html>

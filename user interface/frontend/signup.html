@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account - Penguin Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+<meta name="apple-mobile-web-app-status-bar" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PenguinMonitor">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  </head>
+
+  <body class="bg-cover bg-center min-h-screen flex items-center justify-center" style="background-image: url('penguin-bg.jpeg')">
+    <div class="bg-white/90 rounded-xl shadow-lg p-8 w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create a new account</h2>
+
+      <div id="feedback" class="text-sm text-center text-red-600 mb-2 hidden"></div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700">Email</label>
+        <input id="email" type="email" class="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="name@example.com" />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700">Work ID</label>
+        <input id="workId" type="text" class="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. UCT12345" />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700">Password</label>
+        <input id="password" type="password" class="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="At least 6 characters" />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700">Confirm Password</label>
+        <input id="confirmPassword" type="password" class="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Re-enter password" />
+      </div>
+
+      <button onclick="signup()" id="signupButton"
+        class="w-full flex justify-center items-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <span id="signupText">Create Account</span>
+        <span id="signupSpinner" class="hidden ml-2">
+          <i class="fas fa-spinner fa-spin"></i>
+        </span>
+      </button>
+
+      <p class="mt-4 text-sm text-center">
+        Already have an account? <a href="index.html" class="text-blue-600 hover:underline">Sign in</a>
+      </p>
+    </div>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBSragj8lBTE-GSdm84gssfIfdjH2Ireic",
+        authDomain: "monitoring-system-dfb8a.firebaseapp.com",
+        projectId: "monitoring-system-dfb8a",
+        storageBucket: "monitoring-system-dfb8a.appspot.com",
+        messagingSenderId: "215711914708",
+        appId: "1:215711914708:web:5996b461f599fb6a7df941",
+        measurementId: "G-QNTH842YXF"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+      function showFeedback(message, color = 'red') {
+        const box = document.getElementById('feedback');
+        box.textContent = message;
+        box.className = `text-sm text-center text-${color}-600 mb-2`;
+        box.classList.remove("hidden");
+      }
+
+      function signup() {
+        const signupButton = document.getElementById("signupButton");
+        const signupText = document.getElementById("signupText");
+        const signupSpinner = document.getElementById("signupSpinner");
+
+        signupButton.disabled = true;
+        signupText.classList.add("hidden");
+        signupSpinner.classList.remove("hidden");
+
+        const email = document.getElementById("email").value.trim();
+        const workId = document.getElementById("workId").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+        if (!email || !workId || !password || !confirmPassword) {
+          showFeedback("Please fill in all fields.");
+          resetLoading();
+          return;
+        }
+
+        if (password.length < 6) {
+          showFeedback("Password must be at least 6 characters long.");
+          resetLoading();
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showFeedback("Passwords do not match.");
+          resetLoading();
+          return;
+        }
+
+        auth.createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+
+            return db.ref("users/" + user.uid).set({
+              email: user.email,
+              workId: workId,
+              approved: false,
+              createdAt: new Date().toISOString()
+            }).then(() => {
+              showFeedback("Account created! Please wait for admin approval.", 'green');
+              setTimeout(() => {
+                window.location.href = "index.html";
+              }, 4000);
+            });
+          })
+          .catch((error) => {
+            let message = "Something went wrong.";
+            if (error.code === 'auth/email-already-in-use') {
+              message = "That email is already in use.";
+            } else if (error.code === 'auth/invalid-email') {
+              message = "Invalid email format.";
+            } else if (error.code === 'auth/weak-password') {
+              message = "Password is too weak.";
+            } else {
+              message = "Error: " + error.message;
+            }
+
+            showFeedback(message);
+            resetLoading();
+          });
+
+        function resetLoading() {
+          signupButton.disabled = false;
+          signupText.classList.remove("hidden");
+          signupSpinner.classList.add("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>

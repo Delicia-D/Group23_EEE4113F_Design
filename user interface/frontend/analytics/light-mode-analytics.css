@@ -1,0 +1,102 @@
+/* light-mode-analytics.css - */
+
+/* Main Content */
+body.light-mode .main-content {
+  background-color: #f5f7fa;
+}
+
+/* Summary Section */
+body.light-mode .summary-title {
+  color: #2d3748;
+}
+
+body.light-mode .summary-card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .summary-card h2 {
+  color: #4a5568;
+}
+
+body.light-mode .summary-card p {
+  color: #2d3748;
+}
+
+/* Heatmap */
+body.light-mode .heatmap-table th,
+body.light-mode .heatmap-table td {
+  color: #2d3748;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode .heatmap-cell {
+  background-color: #edf2f7;
+}
+
+body.light-mode .heatmap-cell.fresh {
+  background-color: #48bb78;
+  color: white;
+}
+
+body.light-mode .heatmap-cell.recent {
+  background-color: #f6ad55;
+  color: #2d3748;
+}
+
+body.light-mode .heatmap-cell.stale {
+  background-color: #f56565;
+  color: white;
+}
+
+/* Outlier Panel */
+body.light-mode .outlier-panel {
+  background-color: #ffffff;
+  color: #2d3748;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode #closeOutlierBtn {
+  color: #4a5568;
+}
+
+body.light-mode .outlier-list p {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Form Elements */
+body.light-mode input[type="date"] {
+  background-color: #ffffff;
+  color: #2d3748;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode #applyDateRange {
+  background-color: #4299e1;
+  color: white;
+}
+
+body.light-mode #applyDateRange:hover {
+  background-color: #3182ce;
+}
+
+/* Progress and Slider */
+body.light-mode progress {
+  background-color: #e2e8f0;
+}
+
+body.light-mode progress::-webkit-progress-bar {
+  background-color: #e2e8f0;
+}
+
+body.light-mode progress::-webkit-progress-value {
+  background-color: #4299e1;
+}
+
+body.light-mode input[type="range"] {
+  background-color: #e2e8f0;
+}
+
+body.light-mode input[type="range"]::-webkit-slider-thumb {
+  background: #4299e1;
+}

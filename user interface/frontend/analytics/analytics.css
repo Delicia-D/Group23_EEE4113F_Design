@@ -1,0 +1,219 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  background-color: #121212;
+  color: #e0e0e0;
+  height: 100vh;
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.heatmap-section {
+  flex: 1;
+  max-width: 50%;
+  overflow-x: auto;
+}
+
+.chart-section {
+  flex: 1;
+  max-width: 50%;
+}
+
+.heatmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+  padding: 14px;
+  min-width: 50px;
+  text-align: center;
+  border: 1px solid #444;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.heatmap-cell {
+  background-color: #1e1e1e;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.heatmap-cell.fresh {
+  background-color: #2e7d32;
+}
+
+.heatmap-cell.recent {
+  background-color: #f9a825;
+  color: #000;
+}
+
+.heatmap-cell.stale {
+  background-color: #c62828;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #080808;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid #333;
+}
+
+.sidebar h2 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.sidebar-item {
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-item:hover {
+  background-color: #333;
+  color: #1a73e8;
+}
+
+.sidebar-item i {
+  margin-right: 10px;
+  color: #1a73e8;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #121212;
+}
+
+.summary-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.analytics-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.summary-card {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.summary-card h2 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #aaa;
+}
+
+.summary-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+/* analytics.css */
+/* Replace the existing .outlier-panel styles with: */
+
+.outlier-panel {
+  position: fixed;
+  top: auto;
+  bottom: 20px;
+  right: 20px;
+  height: 25vh; /* Quarter of viewport height */
+  max-height: 300px;
+  width: 300px;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-radius: 8px;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+  padding: 15px;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.outlier-panel.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.outlier-panel.hidden {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+.outlier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.outlier-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+#closeOutlierBtn {
+  background: none;
+  color: #e0e0e0;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.outlier-list p {
+  margin: 8px 0;
+  border-bottom: 1px solid #444;
+  padding-bottom: 4px;
+}
+
+/* Date range selector styles */
+input[type="date"] {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  padding: 8px;
+  border-radius: 4px;
+  font-family: sans-serif;
+}
+
+#applyDateRange {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#applyDateRange:hover {
+  background-color: #0d5bba;
+}
+

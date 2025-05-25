@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Penguin Visit</title>
+  
+   <link rel="stylesheet" href="upload.css" id="upload-dark-stylesheet">
+<link rel="stylesheet" href="upload-light.css" id="upload-light-stylesheet" disabled>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+<meta name="apple-mobile-web-app-status-bar" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PenguinMonitor">
+
+</head>
+<body>
+  <div class="upload-wrapper">
+    <div class="upload-card">
+      <h1> Data Upload</h1>
+      
+
+      <form id="uploadForm" enctype="multipart/form-data">
+        <label for="rfid">RFID Tag</label>
+        <input type="text" name="rfid" id="rfid" required>
+
+        <label for="weight">Weight (kg)</label>
+        <input type="number" step="0.1" name="weight" id="weight" required>
+
+        <label for="timestamp">Timestamp</label>
+        <input type="datetime-local" name="timestamp" id="timestamp" required>
+
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image" accept="image/*" required>
+
+       <button type="submit" id="uploadButton">
+  <span id="uploadText">Submit Data</span>
+  <span id="uploadSpinner" class="hidden ml-2">
+    <i class="fas fa-spinner fa-spin"></i>
+  </span>
+</button>
+
+      </form>
+
+      <p id="uploadMessage"></p>
+      <a href="dashboard.html" class="back-link"> Back to Dashboard</a>
+    </div>
+  </div>
+
+  <script src="upload.js"></script>
+</body>
+</html>

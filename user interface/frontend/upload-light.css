@@ -1,0 +1,111 @@
+/* light-mode-upload.css - Upload page light theme (layout-preserved) */
+
+body.light-mode {
+  background-color: #f5f7fa;
+  color: #333333;
+}
+
+body.light-mode .upload-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+body.light-mode .upload-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode h1 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  color: #2d3748;
+}
+
+body.light-mode .status.success {
+  color: #38a169;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+body.light-mode label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+body.light-mode input[type="text"],
+body.light-mode input[type="number"],
+body.light-mode input[type="datetime-local"],
+body.light-mode input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #2d3748;
+}
+
+body.light-mode button[type="submit"] {
+  margin-top: 25px;
+  width: 100%;
+  padding: 12px;
+  background-color: #4299e1;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+body.light-mode button[type="submit"]:hover {
+  background-color: #3182ce;
+}
+
+body.light-mode .penguin-info-combined-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #edf2f7;
+  border-radius: 12px;
+  padding: 15px 20px;
+  gap: 20px;
+  color: #2d3748;
+  width: 100%;
+  max-width: 500px;
+}
+
+body.light-mode .penguin-text-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  flex: 1;
+}
+
+body.light-mode .penguin-image-box img {
+  width: 130px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode .back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #3182ce;
+  text-decoration: none;
+}
+
+body.light-mode .back-link:hover {
+  text-decoration: underline;
+}
